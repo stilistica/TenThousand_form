@@ -1,0 +1,27 @@
+{
+  "name": "tenthousand_form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w client\" \"npm run dev -w server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stilistica/TenThousand_form.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stilistica/TenThousand_form/issues"
+  },
+  "homepage": "https://github.com/stilistica/TenThousand_form#readme",
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
