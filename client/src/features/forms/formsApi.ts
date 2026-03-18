@@ -1,6 +1,11 @@
 import { api } from "../../app/api";
-import type { GetFormsQuery } from '../../generated/graphql';
-import type { GetFormByIdQuery, GetFormByIdQueryVariables } from '../../generated/graphql';
+import type { GetFormsQuery } from "../../generated/graphql";
+import type {
+  GetFormByIdQuery,
+  GetFormByIdQueryVariables,
+  CreateFormMutation,
+  CreateFormMutationVariables,
+} from "../../generated/graphql";
 
 export const formsApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,6 +21,7 @@ export const formsApi = api.injectEndpoints({
           }
         `,
       }),
+      providesTags: ["Forms"],
     }),
     getFormById: builder.query<GetFormByIdQuery, GetFormByIdQueryVariables>({
       query: (variables) => ({
@@ -37,7 +43,34 @@ export const formsApi = api.injectEndpoints({
         variables,
       }),
     }),
+    createForm: builder.mutation<
+      CreateFormMutation,
+      CreateFormMutationVariables
+    >({
+      query: (variables) => ({
+        document: `
+  mutation CreateForm(
+    $title: String!
+    $description: String
+    $questions: [QuestionInput!]
+  ) {
+    createForm(
+      title: $title
+      description: $description
+      questions: $questions
+    ) {
+      id
+      title
+      description
+    }
+  }
+`,
+        variables,
+      }),
+      invalidatesTags: ["Forms"],
+    }),
   }),
 });
 
-export const { useGetFormsQuery, useGetFormByIdQuery } = formsApi;
+export const { useGetFormsQuery, useGetFormByIdQuery, useCreateFormMutation } =
+  formsApi;

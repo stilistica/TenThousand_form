@@ -13,7 +13,7 @@ const graphqlBaseQuery =
       const result = await request(
         "http://localhost:4000/graphql",
         document,
-        variables
+        variables,
       );
       return { data: result };
     } catch (error) {
@@ -24,5 +24,6 @@ const graphqlBaseQuery =
 export const api = createApi({
   reducerPath: "api",
   baseQuery: graphqlBaseQuery(),
+  tagTypes: ["Forms"],
   endpoints: () => ({}),
 });

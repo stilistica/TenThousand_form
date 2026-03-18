@@ -90,6 +90,15 @@ export type Response = {
   id?: Maybe<Scalars['ID']['output']>;
 };
 
+export type CreateFormMutationVariables = Exact<{
+  title: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  questions?: InputMaybe<Array<QuestionInput> | QuestionInput>;
+}>;
+
+
+export type CreateFormMutation = { __typename?: 'Mutation', createForm?: { __typename?: 'Form', id?: string | null, title?: string | null, description?: string | null } | null };
+
 export type GetFormByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
