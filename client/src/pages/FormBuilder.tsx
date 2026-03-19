@@ -78,11 +78,9 @@ export default function FormBuilder() {
     for (const q of questions) {
       if (!q.title.trim()) return false;
       if (q.title.length > 1200) return false;
-      if (
-        (q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") &&
-        (!q.options || q.options.length === 0)
-      ) {
-        return false;
+      if (q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") {
+        if (!q.options || q.options.length === 0) return false;
+        if (q.options.some((opt) => !opt.trim())) return false;
       }
     }
     return true;
@@ -131,9 +129,8 @@ export default function FormBuilder() {
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      <hr />
       <div className={s.conatinerQuestions}>
-        <h2>Questions</h2>
+        <h2>Questions:</h2>
         <div className={s.questions}>
           {questions.map((q, i) => (
             <div key={q.id} className={s.question}>

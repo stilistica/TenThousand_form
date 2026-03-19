@@ -1,6 +1,8 @@
 # TenThousand Form
 
-A full-stack form builder and response tracker.
+A form builder and response tracker.
+
+> Note: Data does not persist across server restarts, but it functions correctly while the server is running.
 
 ## Quick Start
 
@@ -8,6 +10,10 @@ A full-stack form builder and response tracker.
 
 ```bash
 git clone git@github.com:stilistica/TenThousand_form.git
+```
+and
+
+```bash
 cd TenThousand_form
 ```
 
@@ -22,3 +28,6 @@ npm install
 ```bash
 npm run dev
 ```
+
+You can watch a short video demonstrating the site here:
+[Demo Video]()
