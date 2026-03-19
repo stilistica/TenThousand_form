@@ -1,7 +1,9 @@
+import s from "./FormBuilder.module.scss";
 import { useState } from "react";
 import { useCreateFormMutation } from "../features/forms/formsApi";
 import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 type QuestionType = "TEXT" | "MULTIPLE_CHOICE" | "CHECKBOX" | "DATE";
 
@@ -17,9 +19,7 @@ export default function FormBuilder() {
   const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState<QuestionForm[]>([]);
   const navigate = useNavigate();
-
   const [createForm, { isLoading }] = useCreateFormMutation();
-  // const [createForm, { isLoading, error }] = useCreateFormMutation();
 
   // Додаємо нове питання
   const addQuestion = (type: QuestionType) => {
@@ -38,12 +38,11 @@ export default function FormBuilder() {
     setQuestions(questions.filter((q) => q.id !== id));
   };
 
-  // Змінюємо текст питання
   const updateQuestionTitle = (id: string, title: string) => {
+    if (title.length > 1200) return; // обмеження 1200 символів
     setQuestions(questions.map((q) => (q.id === id ? { ...q, title } : q)));
   };
 
-  // Додаємо/видаляємо опції для MULTIPLE_CHOICE / CHECKBOX
   const updateOption = (qId: string, idx: number, value: string) => {
     setQuestions(
       questions.map((q) => {
@@ -51,15 +50,15 @@ export default function FormBuilder() {
         const newOptions = [...q.options];
         newOptions[idx] = value;
         return { ...q, options: newOptions };
-      }),
+      })
     );
   };
 
   const addOption = (qId: string) => {
     setQuestions(
       questions.map((q) =>
-        q.id === qId ? { ...q, options: [...(q.options || []), ""] } : q,
-      ),
+        q.id === qId ? { ...q, options: [...(q.options || []), ""] } : q
+      )
     );
   };
 
@@ -69,12 +68,27 @@ export default function FormBuilder() {
         if (q.id !== qId || !q.options) return q;
         const newOptions = q.options.filter((_, i) => i !== idx);
         return { ...q, options: newOptions };
-      }),
+      })
     );
   };
 
-  // Відправка форми на сервер
+  // --- валідація форми ---
+  const isFormValid = () => {
+    if (!title.trim() || !description.trim()) return false;
+    if (questions.length === 0) return false;
+    for (const q of questions) {
+      if (!q.title.trim()) return false;
+      if (q.title.length > 1200) return false;
+      if ((q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") && (!q.options || q.options.length === 0)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = async () => {
+    if (!isFormValid()) return;
+
     try {
       await createForm({
         title,
@@ -86,22 +100,22 @@ export default function FormBuilder() {
         })),
       }).unwrap();
 
-      navigate("/"); 
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div>
+    <div className={clsx(s.container, 'container')}>
       <h1>Create New Form</h1>
       <input
-        placeholder="Form Title"
+        placeholder="Form Title*"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea
-        placeholder="Description"
+        placeholder="Description*"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
@@ -118,7 +132,7 @@ export default function FormBuilder() {
           }}
         >
           <input
-            placeholder={`Question #${i + 1}`}
+            placeholder={`Question #${i + 1}*`}
             value={q.title}
             onChange={(e) => updateQuestionTitle(q.id, e.target.value)}
           />
@@ -129,8 +143,8 @@ export default function FormBuilder() {
                 questions.map((qq) =>
                   qq.id === q.id
                     ? { ...qq, type: e.target.value as QuestionType }
-                    : qq,
-                ),
+                    : qq
+                )
               )
             }
           >
@@ -160,9 +174,7 @@ export default function FormBuilder() {
                     value={opt}
                     onChange={(e) => updateOption(q.id, idx, e.target.value)}
                   />
-                  <button onClick={() => removeOption(q.id, idx)}>
-                    Remove
-                  </button>
+                  <button onClick={() => removeOption(q.id, idx)}>Remove</button>
                 </div>
               ))}
               <button onClick={() => addOption(q.id)}>Add Option</button>
@@ -179,10 +191,16 @@ export default function FormBuilder() {
       <button onClick={() => addQuestion("DATE")}>Add Date</button>
 
       <hr />
-      <button onClick={handleSubmit} disabled={isLoading}>
+      <button
+        onClick={handleSubmit}
+        disabled={isLoading || !isFormValid()}
+        style={{
+          opacity: !isFormValid() || isLoading ? 0.5 : 1,
+          cursor: !isFormValid() || isLoading ? "not-allowed" : "pointer",
+        }}
+      >
         {isLoading ? "Saving..." : "Save Form"}
       </button>
-      {/* {error && <p style={{ color: "red" }}>Error creating form</p>} */}
     </div>
   );
 }

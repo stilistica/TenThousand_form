@@ -7,6 +7,8 @@ import type {
   CreateFormMutationVariables,
   SubmitResponseMutation,
   SubmitResponseMutationVariables,
+  GetResponsesQuery,
+  GetResponsesQueryVariables
 } from "../../generated/graphql";
 
 export const formsApi = api.injectEndpoints({
@@ -92,6 +94,22 @@ export const formsApi = api.injectEndpoints({
         variables,
       }),
     }),
+    getResponses: builder.query<GetResponsesQuery, GetResponsesQueryVariables>({
+      query: (variables) => ({
+        document: `
+      query GetResponses($formId: ID!) {
+        responses(formId: $formId) {
+          formId
+          answers {
+            questionId
+            value
+          }
+        }
+      }
+    `,
+        variables,
+      }),
+    }),
   }),
 });
 
@@ -100,4 +118,5 @@ export const {
   useGetFormByIdQuery,
   useCreateFormMutation,
   useSubmitResponseMutation,
+  useGetResponsesQuery,
 } = formsApi;

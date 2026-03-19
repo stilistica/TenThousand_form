@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  div {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: end;
+    button {
+      margin: 0 0 0 auto;
+    }
+  }
+}
+.formItem {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 15px;
+  border: 2px solid #c084fc;
+  padding: 15px;
+  margin-bottom: 10px;
+  &:hover {
+    box-shadow:
+      0 0 5px #aa3bff99,
+      0 0 10px #aa3bff82,
+      0 0 20px #c084fc8b,
+      0 0 40px #c084fc52;
+  }
+  @media (max-width: 1039px) {
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+.formInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  h3 {
+    max-width: 450px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  p {
+    max-width: 600px;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4em;
+    word-break: break-word;
+  }
+}
+.formBtns {
+  display: flex;
+  gap: 10px;
+  button {
+    background-color: transparent;
+    color: #fff;
+    padding: 10px 20px;
+    border: 2px solid #c084fc;
+    border-radius: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow:
+      0 0 2px #aa3bff56,
+      0 0 2px #aa3bff,
+      0 0 10px #c084fc,
+      0 0 20px #c084fc79;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: #aa3bff;
+      transform: scale(1.05);
+      font-weight: 700;
+    }
+  }
+}

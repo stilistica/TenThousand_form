@@ -7,6 +7,9 @@ import {
   GraphQLNonNull,
   GraphQLInputObjectType,
 } from "graphql";
+import { randomUUID } from "crypto";
+import { Question } from "./types.js";
+
 
 import { forms, responses } from "./data.js";
 
@@ -112,7 +115,12 @@ const Mutation = new GraphQLObjectType({
           id: Date.now().toString(),
           title: args.title,
           description: args.description,
-          questions: args.questions || [],
+          questions: (args.questions || []).map((q: Question) => ({
+            id: randomUUID(), 
+            title: q.title,
+            type: q.type,
+            options: q.options || [],
+          })),
         };
 
         forms.push(newForm);
@@ -138,7 +146,7 @@ const Mutation = new GraphQLObjectType({
         if (!formExists) {
           throw new Error("Form not found");
         }
-				
+
         responses.push(newResponse);
 
         return newResponse;
