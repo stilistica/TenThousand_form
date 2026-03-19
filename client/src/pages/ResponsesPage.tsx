@@ -42,12 +42,15 @@ function ResponsesPage() {
   return (
     <div className={clsx(s.container, "container")}>
       <div className={s.info}>
-        <h1>Responses</h1>
+        <h1>Responses: {responses?.length}</h1>
+        <h2>Form: {form?.title ?? "Untitled Form"}</h2>
 
-        <Link to="/">
-          <button className="btn-back">← Back</button>
-        </Link>
-        <hr className="line"/>
+        <div>
+          <Link to="/">
+            <button className="btn-back">← Back</button>
+          </Link>
+        </div>
+        <hr className="line" />
       </div>
 
       {responses.length === 0 && <p className="text">No responses yet</p>}

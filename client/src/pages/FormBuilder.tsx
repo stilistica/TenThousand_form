@@ -22,7 +22,6 @@ export default function FormBuilder() {
   const navigate = useNavigate();
   const [createForm, { isLoading }] = useCreateFormMutation();
 
-  // Додаємо нове питання
   const addQuestion = (type: QuestionType) => {
     setQuestions([
       ...questions,
@@ -73,7 +72,6 @@ export default function FormBuilder() {
     );
   };
 
-  // --- валідація форми ---
   const isFormValid = () => {
     if (!title.trim() || !description.trim()) return false;
     if (questions.length === 0) return false;
@@ -114,9 +112,11 @@ export default function FormBuilder() {
     <div className={clsx(s.container, "container")}>
       <div className={s.info}>
         <h1>Create New Form</h1>
-        <Link to="/">
-          <button className="btn-back">← Back</button>
-        </Link>
+        <div>
+          <Link to="/">
+            <button className="btn-back">← Back</button>
+          </Link>
+        </div>
         <hr className="line" />
       </div>
       <div className={s.formInputs}>
@@ -172,6 +172,7 @@ export default function FormBuilder() {
                   {q.options?.map((opt, idx) => (
                     <div key={idx} className={s.optionRow}>
                       <input
+                        placeholder="Variant option*"
                         value={opt}
                         onChange={(e) =>
                           updateOption(q.id, idx, e.target.value)
@@ -182,7 +183,12 @@ export default function FormBuilder() {
                       </button>
                     </div>
                   ))}
-                  <button className={s.optionAdd} onClick={() => addOption(q.id)}>Add Option</button>
+                  <button
+                    className={s.optionAdd}
+                    onClick={() => addOption(q.id)}
+                  >
+                    Add Option
+                  </button>
                 </div>
               )}
             </div>
