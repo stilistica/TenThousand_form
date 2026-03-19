@@ -1,0 +1,11 @@
+mutation SubmitResponse(
+  $formId: ID!
+  $answers: [AnswerInput!]
+) {
+  submitResponse(
+    formId: $formId
+    answers: $answers
+  ) {
+    formId
+  }
+}

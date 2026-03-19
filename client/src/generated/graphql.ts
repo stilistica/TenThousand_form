@@ -110,3 +110,11 @@ export type GetFormsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetFormsQuery = { __typename?: 'Query', forms?: Array<{ __typename?: 'Form', id?: string | null, title?: string | null, description?: string | null } | null> | null };
+
+export type SubmitResponseMutationVariables = Exact<{
+  formId: Scalars['ID']['input'];
+  answers?: InputMaybe<Array<AnswerInput> | AnswerInput>;
+}>;
+
+
+export type SubmitResponseMutation = { __typename?: 'Mutation', submitResponse?: { __typename?: 'Response', formId?: string | null } | null };
