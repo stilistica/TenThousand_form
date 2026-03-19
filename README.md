@@ -7,7 +7,7 @@ A full-stack form builder and response tracker.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/stilistica/TenThousand_form.git
+git clone git@github.com:stilistica/TenThousand_form.git
 cd TenThousand_form
 ```
 
