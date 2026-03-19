@@ -9,10 +9,8 @@ import type { GetFormByIdQueryVariables } from "../generated/graphql";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 
-// Визначаємо тип для answers
 type AnswersType = Record<string, string | string[]>;
 
-// Для помилок
 type ErrorsType = Record<string, string>;
 
 function FormPage() {
@@ -33,18 +31,17 @@ function FormPage() {
       [questionId]: value,
     }));
 
-    // Одразу чистимо помилку для цього питання
     setErrors((prev) => ({
       ...prev,
       [questionId]: "",
     }));
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
+  if (isLoading) return <p className="text">Loading...</p>;
+  if (error) return <p className="text">Error</p>;
 
   const form = data?.form;
-  if (!form) return <p>Form not found</p>;
+  if (!form) return <p className="text">Form not found</p>;
 
   const questions = (form.questions ?? []).filter(
     (q): q is NonNullable<typeof q> => q != null,
@@ -248,7 +245,7 @@ function FormPage() {
       <button
         onClick={handleSubmit}
         disabled={!isFormValid()}
-        className={s.submit}
+        className={clsx(s.submit, "neon-button")}
         style={{
           opacity: !isFormValid() ? 0.8 : 1,
           cursor: !isFormValid() ? "not-allowed" : "pointer",

@@ -4,6 +4,7 @@ import { useCreateFormMutation } from "../features/forms/formsApi";
 import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 type QuestionType = "TEXT" | "MULTIPLE_CHOICE" | "CHECKBOX" | "DATE";
 
@@ -50,15 +51,15 @@ export default function FormBuilder() {
         const newOptions = [...q.options];
         newOptions[idx] = value;
         return { ...q, options: newOptions };
-      })
+      }),
     );
   };
 
   const addOption = (qId: string) => {
     setQuestions(
       questions.map((q) =>
-        q.id === qId ? { ...q, options: [...(q.options || []), ""] } : q
-      )
+        q.id === qId ? { ...q, options: [...(q.options || []), ""] } : q,
+      ),
     );
   };
 
@@ -68,7 +69,7 @@ export default function FormBuilder() {
         if (q.id !== qId || !q.options) return q;
         const newOptions = q.options.filter((_, i) => i !== idx);
         return { ...q, options: newOptions };
-      })
+      }),
     );
   };
 
@@ -79,7 +80,10 @@ export default function FormBuilder() {
     for (const q of questions) {
       if (!q.title.trim()) return false;
       if (q.title.length > 1200) return false;
-      if ((q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") && (!q.options || q.options.length === 0)) {
+      if (
+        (q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") &&
+        (!q.options || q.options.length === 0)
+      ) {
         return false;
       }
     }
@@ -107,97 +111,92 @@ export default function FormBuilder() {
   };
 
   return (
-    <div className={clsx(s.container, 'container')}>
-      <h1>Create New Form</h1>
-      <input
-        placeholder="Form Title*"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <textarea
-        placeholder="Description*"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+    <div className={clsx(s.container, "container")}>
+      <div className={s.info}>
+        <h1>Create New Form</h1>
+        <Link to="/">
+          <button className="btn-back">← Back</button>
+        </Link>
+        <hr className="line" />
+      </div>
+      <div className={s.formInputs}>
+        <input
+          placeholder="Form Title*"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <textarea
+          placeholder="Description*"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
       <hr />
-      <h2>Questions</h2>
-      {questions.map((q, i) => (
-        <div
-          key={q.id}
-          style={{
-            border: "1px solid gray",
-            marginBottom: "10px",
-            padding: "10px",
-            position: "relative",
-          }}
-        >
-          <input
-            placeholder={`Question #${i + 1}*`}
-            value={q.title}
-            onChange={(e) => updateQuestionTitle(q.id, e.target.value)}
-          />
-          <select
-            value={q.type}
-            onChange={(e) =>
-              setQuestions(
-                questions.map((qq) =>
-                  qq.id === q.id
-                    ? { ...qq, type: e.target.value as QuestionType }
-                    : qq
-                )
-              )
-            }
-          >
-            <option value="TEXT">Text</option>
-            <option value="MULTIPLE_CHOICE">Multiple Choice</option>
-            <option value="CHECKBOX">Checkbox</option>
-            <option value="DATE">Date</option>
-          </select>
-          <button
-            onClick={() => removeQuestion(q.id)}
-            style={{
-              position: "absolute",
-              top: "5px",
-              right: "5px",
-              cursor: "pointer",
-            }}
-          >
-            ❌
-          </button>
+      <div className={s.conatinerQuestions}>
+        <h2>Questions</h2>
+        <div className={s.questions}>
+          {questions.map((q, i) => (
+            <div key={q.id} className={s.question}>
+              <input
+                placeholder={`Question #${i + 1}*`}
+                value={q.title}
+                onChange={(e) => updateQuestionTitle(q.id, e.target.value)}
+              />
+              <select
+                value={q.type}
+                onChange={(e) =>
+                  setQuestions(
+                    questions.map((qq) =>
+                      qq.id === q.id
+                        ? { ...qq, type: e.target.value as QuestionType }
+                        : qq,
+                    ),
+                  )
+                }
+              >
+                <option value="TEXT">Text</option>
+                <option value="MULTIPLE_CHOICE">Multiple Choice</option>
+                <option value="CHECKBOX">Checkbox</option>
+                <option value="DATE">Date</option>
+              </select>
+              <button
+                onClick={() => removeQuestion(q.id)}
+                className={s.removeBtn}
+              >
+                ✕
+              </button>
 
-          {(q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") && (
-            <div>
-              <h4>Options</h4>
-              {q.options?.map((opt, idx) => (
-                <div key={idx}>
-                  <input
-                    value={opt}
-                    onChange={(e) => updateOption(q.id, idx, e.target.value)}
-                  />
-                  <button onClick={() => removeOption(q.id, idx)}>Remove</button>
+              {(q.type === "MULTIPLE_CHOICE" || q.type === "CHECKBOX") && (
+                <div className={s.options}>
+                  <h4>Options</h4>
+                  {q.options?.map((opt, idx) => (
+                    <div key={idx} className={s.optionRow}>
+                      <input
+                        value={opt}
+                        onChange={(e) =>
+                          updateOption(q.id, idx, e.target.value)
+                        }
+                      />
+                      <button onClick={() => removeOption(q.id, idx)}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  <button className={s.optionAdd} onClick={() => addOption(q.id)}>Add Option</button>
                 </div>
-              ))}
-              <button onClick={() => addOption(q.id)}>Add Option</button>
+              )}
             </div>
-          )}
+          ))}
         </div>
-      ))}
 
-      <button onClick={() => addQuestion("TEXT")}>Add Text Question</button>
-      <button onClick={() => addQuestion("MULTIPLE_CHOICE")}>
-        Add Multiple Choice
-      </button>
-      <button onClick={() => addQuestion("CHECKBOX")}>Add Checkbox</button>
-      <button onClick={() => addQuestion("DATE")}>Add Date</button>
-
-      <hr />
+        <button className={s.addBtn} onClick={() => addQuestion("TEXT")}>
+          Add New Question
+        </button>
+      </div>
       <button
         onClick={handleSubmit}
+        className={clsx(s.submit, "neon-button")}
         disabled={isLoading || !isFormValid()}
-        style={{
-          opacity: !isFormValid() || isLoading ? 0.5 : 1,
-          cursor: !isFormValid() || isLoading ? "not-allowed" : "pointer",
-        }}
       >
         {isLoading ? "Saving..." : "Save Form"}
       </button>

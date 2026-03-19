@@ -8,11 +8,11 @@ function App() {
   const { data, isLoading, error } = useGetFormsQuery();
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p className="text">Loading...</p>;
   }
 
   if (error) {
-    return <p>Error loading forms</p>;
+    return <p className="text">Error loading forms</p>;
   }
 
   const forms =
@@ -30,7 +30,7 @@ function App() {
         </div>
       </div>
 
-      {forms.length === 0 && <p>No forms available</p>}
+      {forms.length === 0 && <p className="text">No forms available</p>}
 
       {forms.map((form) => {
         if (!form.id) return null;

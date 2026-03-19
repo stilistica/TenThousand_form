@@ -8,31 +8,13 @@
   flex-direction: column;
   gap: 15px;
   h1 {
-    // font-size: 46px;
-    margin: 20px 0 10px 0;
+  }
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
   }
 }
-
-// .questions {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 20px;
-//   & .question {
-//     padding: 15px;
-//     display: flex;
-// 		flex-direction: column;
-// 		gap: 20px;
-//     border-radius: 15px;
-//     border: 1px solid #c084fc;
-//     &:hover {
-//       box-shadow:
-//         0 0 5px #aa3bff99,
-//         0 0 5px #aa3bff82,
-//         0 0 5px #c084fc8b,
-//         0 0 10px #c084fc52;
-//     }
-//   }
-// }
 
 .questions {
   display: flex;
@@ -101,26 +83,14 @@
 
 .submit {
   padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
-  background-color: #c084fc;
-  color: white;
-  font-size: 26px;
-  cursor: pointer;
-  transition:
-    background-color 0.3s,
-    transform 0.2s;
 
   margin: 20px 0 50px 0;
 
-  &:hover:not(:disabled) {
-    background-color: #aa3bff;
-    transform: translateY(-2px);
-  }
 
   &:disabled {
-    opacity: 0.1;
+    opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
   }
 }
 

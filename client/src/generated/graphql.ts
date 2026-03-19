@@ -116,7 +116,7 @@ export type GetResponsesQueryVariables = Exact<{
 }>;
 
 
-export type GetResponsesQuery = { __typename?: 'Query', responses?: Array<{ __typename?: 'Response', formId?: string | null, answers?: Array<{ __typename?: 'Answer', questionId?: string | null, value?: string | null } | null> | null } | null> | null };
+export type GetResponsesQuery = { __typename?: 'Query', responses?: Array<{ __typename?: 'Response', id?: string | null, formId?: string | null, answers?: Array<{ __typename?: 'Answer', questionId?: string | null, value?: string | null } | null> | null } | null> | null };
 
 export type SubmitResponseMutationVariables = Exact<{
   formId: Scalars['ID']['input'];
