@@ -32,4 +32,7 @@ npm install
 npm run dev
 ```
 
-
+4. Open your browser and go to:
+```bash
+http://localhost:5173
+```
